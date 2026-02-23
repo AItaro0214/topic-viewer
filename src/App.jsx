@@ -517,7 +517,7 @@ export default function App() {
   const [activeId, setActiveId] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
   const [leftOpen, setLeftOpen] = useState(false);
-  const [wheelOpen, setWheelOpen] = useState(false);
+  const [wheelOpen, setWheelOpen] = useState(BUNDLED_FILES.length > 0);
 
   const allArticles = rawFiles.map(f=>parseArticle(f.content,f.name,f.lastModified)).sort((a,b)=>b.date-a.date);
   const articles = dateFilter ? allArticles.filter(a=>a.date.toLocaleDateString("ja-JP")===dateFilter) : allArticles;
