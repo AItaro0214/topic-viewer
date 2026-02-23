@@ -525,21 +525,6 @@ export default function App() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Exo+2:wght@400;600;700;800&display=swap');
-        *{box-sizing:border-box;margin:0;padding:0;}
-        body{background:#030810;min-height:100vh;font-family:'Exo 2',sans-serif;overflow:hidden;}
-        ::-webkit-scrollbar{width:3px;}
-        ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
-        strong{font-weight:700;} em{font-style:italic;}
-        code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);padding:1px 4px;border-radius:3px;font-size:0.87em;}
-        blockquote{margin:0;}
-        @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.2}}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes scanMove{0%{top:-3px}100%{top:100%}}
-        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-      `}</style>
-
       <div style={{position:"fixed",inset:0,backgroundImage:"linear-gradient(rgba(0,229,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.022) 1px,transparent 1px)",backgroundSize:"44px 44px",zIndex:0,pointerEvents:"none"}}/>
       <div style={{position:"fixed",inset:0,background:"radial-gradient(ellipse 80% 55% at 50% 30%,rgba(0,12,35,0.55),transparent)",zIndex:0,pointerEvents:"none"}}/>
       <div style={{position:"fixed",left:0,right:0,height:3,background:"linear-gradient(transparent,rgba(0,229,255,0.055),transparent)",zIndex:997,pointerEvents:"none",animation:"scanMove 6s linear infinite"}}/>
