@@ -1,5 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
+// ─── BUNDLED CONTENT FILES ───────────────────────────────────────────────────
+const mdModules = import.meta.glob('/content/*.md', { eager: true, query: '?raw', import: 'default' });
+const BUNDLED_FILES = Object.entries(mdModules).map(([path, content]) => {
+  const name = path.split('/').pop();
+  const dateMatch = name.match(/^(\d{4}-\d{2}-\d{2})/);
+  const lastModified = dateMatch ? new Date(dateMatch[1] + "T12:00:00") : new Date();
+  return { name, lastModified, content };
+});
+
 // ─── COLORS ──────────────────────────────────────────────────────────────────
 const COLORS = ["#00e5ff","#00ff88","#ff6b35","#c77dff","#ffb300","#ff4d8d","#4fc3f7","#a5d6a7"];
 
@@ -504,7 +513,7 @@ function FolderLoader({ onLoad }) {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [rawFiles, setRawFiles] = useState([]);
+  const [rawFiles, setRawFiles] = useState(BUNDLED_FILES);
   const [activeId, setActiveId] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
   const [leftOpen, setLeftOpen] = useState(false);
