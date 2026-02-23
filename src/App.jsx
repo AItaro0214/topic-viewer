@@ -69,33 +69,41 @@ function parseBlocks(lines) {
   return out;
 }
 
-function inl(text) {
-  if (!text) return "";
-  return text
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/`(.+?)`/g, "<code>$1</code>");
+function Inl({ text }) {
+  if (!text) return null;
+  const parts = [];
+  const re = /(\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`)/g;
+  let last = 0, m, key = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    if (m[2]) parts.push(<strong key={key++}>{m[2]}</strong>);
+    else if (m[3]) parts.push(<em key={key++}>{m[3]}</em>);
+    else if (m[4]) parts.push(<code key={key++}>{m[4]}</code>);
+    last = re.lastIndex;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return <>{parts}</>;
 }
 
 // ─── BLOCK RENDERER ──────────────────────────────────────────────────────────
 function Block({ block, accent }) {
   switch (block.type) {
     case "p":
-      return <p style={{fontSize:12,lineHeight:1.8,color:"rgba(210,228,255,0.7)",marginBottom:10}} dangerouslySetInnerHTML={{__html:inl(block.text)}}/>;
+      return <p style={{fontSize:12,lineHeight:1.8,color:"rgba(210,228,255,0.7)",marginBottom:10}}><Inl text={block.text}/></p>;
     case "quote":
-      return <blockquote style={{borderLeft:`3px solid ${accent}`,margin:"0 0 12px",padding:"8px 12px",background:`${accent}0a`,borderRadius:"0 5px 5px 0",fontSize:11,color:`${accent}c0`,lineHeight:1.75,fontStyle:"italic"}} dangerouslySetInnerHTML={{__html:inl(block.text)}}/>;
+      return <blockquote style={{borderLeft:`3px solid ${accent}`,margin:"0 0 12px",padding:"8px 12px",background:`${accent}0a`,borderRadius:"0 5px 5px 0",fontSize:11,color:`${accent}c0`,lineHeight:1.75,fontStyle:"italic"}}><Inl text={block.text}/></blockquote>;
     case "list":
       return <ul style={{margin:"0 0 10px",padding:0,listStyle:"none"}}>{block.items.map((item,i)=>(
         <li key={i} style={{display:"flex",gap:7,marginBottom:5,fontSize:11.5,lineHeight:1.65,color:"rgba(200,218,255,0.62)",alignItems:"flex-start"}}>
           <span style={{color:accent,flexShrink:0,fontSize:7,marginTop:5}}>&#9654;</span>
-          <span dangerouslySetInnerHTML={{__html:inl(item)}}/>
+          <span><Inl text={item}/></span>
         </li>
       ))}</ul>;
     case "olist":
       return <ol style={{margin:"0 0 10px",padding:0,listStyle:"none"}}>{block.items.map((item,i)=>(
         <li key={i} style={{display:"flex",gap:7,marginBottom:5,fontSize:11.5,lineHeight:1.65,color:"rgba(200,218,255,0.62)",alignItems:"flex-start"}}>
           <span style={{color:accent,flexShrink:0,fontFamily:"'JetBrains Mono',monospace",fontSize:9,minWidth:16,textAlign:"right",paddingTop:2}}>{i+1}.</span>
-          <span dangerouslySetInnerHTML={{__html:inl(item)}}/>
+          <span><Inl text={item}/></span>
         </li>
       ))}</ol>;
     case "table":
@@ -108,7 +116,7 @@ function Block({ block, accent }) {
             <tbody>{block.rows.map((row,ri)=>(
               <tr key={ri} style={{background:ri%2===0?"rgba(255,255,255,0.02)":"transparent"}}>
                 {row.map((cell,ci)=>(
-                  <td key={ci} style={{padding:"4px 8px",color:ci===0?"rgba(215,232,255,0.85)":"rgba(175,198,230,0.48)",borderBottom:"1px solid rgba(255,255,255,0.035)",lineHeight:1.55,fontSize:ci===0?10.5:10}} dangerouslySetInnerHTML={{__html:inl(cell)}}/>
+                  <td key={ci} style={{padding:"4px 8px",color:ci===0?"rgba(215,232,255,0.85)":"rgba(175,198,230,0.48)",borderBottom:"1px solid rgba(255,255,255,0.035)",lineHeight:1.55,fontSize:ci===0?10.5:10}}><Inl text={cell}/></td>
                 ))}
               </tr>
             ))}</tbody>
