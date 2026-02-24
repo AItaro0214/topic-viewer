@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/topic-viewer/',
+  build: {
+    target: ['es2015', 'safari11'],
+  },
 })
