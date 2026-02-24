@@ -516,13 +516,6 @@ function ArticleView({ article }) {
         </div>
         <h1 style={{fontFamily:"'Exo 2',sans-serif",fontSize:19,fontWeight:800,color:"#d8ecff",letterSpacing:"0.02em",lineHeight:1.2,marginBottom:4}}>{article.title}</h1>
         <div style={{fontSize:10.5,color:"rgba(190,215,255,0.38)",fontStyle:"italic",minHeight:1}}>{article.subtitle || ""}</div>
-        <div style={{display:"flex",gap:5,marginTop:10,flexWrap:"wrap"}}>
-          {article.sections.map(function(s,i){
-            var ac = COLORS[i%COLORS.length];
-            var active = openSec===i;
-            return <button key={i} onClick={function(){setOpenSec(i);}} style={{padding:"2px 9px",borderRadius:3,border:"1px solid "+(active?ac+"55":"rgba(255,255,255,0.07)"),background:active?ac+"0f":"transparent",color:active?ac:"rgba(170,195,230,0.38)",fontSize:9,fontFamily:"'JetBrains Mono',monospace",cursor:"pointer",letterSpacing:"0.04em",transition:"all 0.15s",whiteSpace:"nowrap"}}>{s.title.length>16?s.title.slice(0,16)+"\u2026":s.title}</button>;
-          })}
-        </div>
       </div>
       <div style={{flex:1,overflowY:"auto",overflowX:"hidden",padding:"14px 28px 28px",WebkitOverflowScrolling:"touch",scrollbarWidth:"thin",scrollbarColor:"rgba(255,255,255,0.05) transparent"}}>
         {article.sections.map(function(sec,i){
